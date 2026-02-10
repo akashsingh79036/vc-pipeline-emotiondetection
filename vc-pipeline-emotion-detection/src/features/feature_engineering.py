@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import os 
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import yaml
 import logging
 
@@ -42,8 +42,8 @@ def load_params(params_path: str) -> dict:
 
 def apply_bow(train_data:pd.DataFrame,test_data:  pd.DataFrame,max_features:int) -> tuple:
     try:
-        #Apply Bag of words(countvectorizer)
-        vectorizer=CountVectorizer(max_features=max_features)
+        #Apply (tfidfvectorizer)
+        vectorizer=TfidfVectorizer(max_features=max_features)
 
         #Apply Bow
         X_train=train_data['content'].values
@@ -93,8 +93,8 @@ def main():
         train_data=load_data('./data/interim/train_processed.csv')
         test_data=load_data('./data/interim/test_processed.csv')
         train_df,test_df=apply_bow(train_data,test_data,max_features=max_features)
-        save_data(train_df,os.path.join("data","processed","train_bow.csv"))
-        save_data(test_df,os.path.join("data","processed","test_bow.csv"))
+        save_data(train_df,os.path.join("data","processed","train_tfidf.csv"))
+        save_data(test_df,os.path.join("data","processed","test_tfidf.csv"))
     except Exception as e:
         logger.error('Feature engineering failed: %s',e)
         print(f"Error: {e}")
